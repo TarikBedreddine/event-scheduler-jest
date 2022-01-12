@@ -31,7 +31,10 @@ export default class EventService {
      * @return {null | Event}
      */
     getFirstEvent() {
-        return null; //TODO
+        const now = Date.now(); 
+        const sortedEvents = this.getEvents().sort((firstEvent, secondEvent) => firstEvent.startTime - secondEvent.endTime);
+        const upcommingEvent = sortedEvents.find(event => event.startTime > now);
+        return upcommingEvent != null ? upcommingEvent : null;
     }
 
     /**
@@ -39,7 +42,10 @@ export default class EventService {
      * @return {null | Event}
      */
     getLastEvent() {
-        return null; //TODO
+        const now = Date.now();
+        const events = this.getEvents().sort((firstEvent, secondEvent) => firstEvent.startTime - secondEvent.endTime).reverse();
+        const lastUpcommingEvent = events.find(event => event.startTime > now);
+        return lastUpcommingEvent != null ? lastUpcommingEvent : null;
     }
 
     /**
@@ -47,7 +53,23 @@ export default class EventService {
      * @return {null | Event}
      */
     getLongestEvent() {
-        return null; //TODO
+        const now = Date.now();
+        let longestEventDate = null;
+        let longestEvent = null;
+        this.getEvents().forEach(event => {
+            if (event.startTime < event.endTime) {
+                if (longestEvent != null) {
+                    if (longestEventDate < (event.endTime - event.startTime)) {
+                        longestEventDate = event.endTime - event.startTime;
+                        longestEvent = event;
+                    }
+                } else {
+                    longestEventDate = event.endTime - event.startTime;
+                    longestEvent = event;
+                }
+            }
+        });
+        return longestEvent != null ? longestEvent : null;
     }
 
     /**
@@ -97,5 +119,5 @@ export default class EventService {
         let now = Date.now();
         return this.hasEventOn(new Date(now));
     }
-    
+
 }

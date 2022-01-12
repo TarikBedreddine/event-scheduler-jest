@@ -32,4 +32,34 @@ describe("Event Service",()=> {
         let eventService = new EventService(new EventRepository());
         expect(eventService.getEvents().length).toBe(3);
     })
+
+    test('first upcomming event', async () => {
+        Date.now = jest.fn(() => new Date(Date.UTC(2017, 1, 1)).valueOf());  
+        let eventService = new EventService(new EventRepository());
+        expect(eventService.getFirstEvent()).toBe(fakeEvents[1]);
+    })
+
+    test('upcomming event null', async () => {
+        Date.now = jest.fn(() => new Date(Date.UTC(2025, 1, 1)).valueOf());  
+        let eventService = new EventService(new EventRepository());
+        expect(eventService.getFirstEvent()).toBe(null);
+    })
+
+    test('last upcomming event', async () => {
+        Date.now = jest.fn(() => new Date(Date.UTC(2017, 1, 1)).valueOf());  
+        let eventService = new EventService(new EventRepository());
+        expect(eventService.getFirstEvent()).toBe(fakeEvents[1]);
+    })
+
+    test('last upcomming event null', async () => {
+        Date.now = jest.fn(() => new Date(Date.UTC(2025, 1, 1)).valueOf());  
+        let eventService = new EventService(new EventRepository());
+        expect(eventService.getFirstEvent()).toBe(null);
+    })
+
+    test('the longest event', async () => {
+        Date.now = jest.fn(() => new Date(Date.UTC(2017, 1, 1)).valueOf());  
+        let eventService = new EventService(new EventRepository());
+        expect(eventService.getLongestEvent()).toBe(fakeEvents[0]);
+    })
 });
